@@ -163,16 +163,20 @@ for( i=0;i<deliveries.length;i++)
 
     if(deliveries[i]['volume']>=25)
       deliveries[i]['price']= deliveries[i]['price'] - (deliveries[i]['price']*50)/100;
+
+    deliveries[i]['insurance']=deliveries[i]['price']*15/100;
+    deliveries[i]['treasury']=deliveries[i]['distance']/500;
+    deliveries[i]['convargo']=deliveries[i]['price']*30/100-deliveries[i]['insurance']-deliveries[i]['treasury'];
+
+    if (deliveries[i]['deductibleReduction'] == true)
+    {
+        deliveries[i]['price']+=deliveries[i]['volume'];
+    
+    }
+
   }
 }
 
-for( i = 0;i<deliveries.length;i++)
-{
-  deliveries[i]['insurance']=deliveries[i]['price']*15/100;
-  deliveries[i]['treasury']=deliveries[i]['distance']/500;
-  deliveries[i]['convargo']=deliveries[i]['price']*30/100-deliveries[i]['insurance']-deliveries[i]['treasury'];
-
-}
 console.log(truckers);
 console.log(deliveries);
 console.log(actors);
