@@ -147,13 +147,24 @@ const actors = [{
 
 var i;
 var j;
+var k;
+var shippingPrice=0;
+var deductibleReduction=0;
+var commission;
+var insurance;
+var treasury;
 
 for( i=0;i<deliveries.length;i++)
 {
   for( j=0;j<truckers.length;j++)
   {
+    /*getShippingPrice(deliveries[i]['truckerId'],truckers[j]['id']);
+    deliveries[i]['price']=shippingPrice;*/
     if(truckers[i]['id']==deliveries[j]['truckerId'])
-      deliveries[i]['price']=deliveries[i]['distance']*truckers[j]['pricePerKm']+deliveries[i]['volume']*truckers[j]['pricePerVolume'];
+    {
+      shippingPrice=deliveries[i]['distance']*truckers[j]['pricePerKm']+deliveries[i]['volume']*truckers[j]['pricePerVolume'];
+      deliveries[i]['price']=shippingPrice;
+    }
 
     if(deliveries[i]['volume']>=5 && deliveries[i]['volume']<10)
        deliveries[i]['price']= deliveries[i]['price'] - (deliveries[i]['price']*10)/100;
@@ -164,16 +175,34 @@ for( i=0;i<deliveries.length;i++)
     if(deliveries[i]['volume']>=25)
       deliveries[i]['price']= deliveries[i]['price'] - (deliveries[i]['price']*50)/100;
 
-    deliveries[i]['insurance']=deliveries[i]['price']*15/100;
-    deliveries[i]['treasury']=deliveries[i]['distance']/500;
-    deliveries[i]['convargo']=deliveries[i]['price']*30/100-deliveries[i]['insurance']-deliveries[i]['treasury'];
+    commission=shippingPrice*30/100;
+    insurance=commission/2;
+    treasury=deliveries[i]['distance']/500;
+    deliveries[i]['commission']['insurance']=insurance;
+    deliveries[i]['commission']['treasury']=treasury;
+    deliveries[i]['commission']['convargo']=commission-(insurance + treasury);
 
     if (deliveries[i]['deductibleReduction'] == true)
     {
+        deductibleReduction=deliveries[i]['volume'];
         deliveries[i]['price']+=deliveries[i]['volume'];
-    
     }
 
+    for( i=0;i<actors.length;i++)
+    {
+      for( j=0;j<deliveries.length;j++)
+      {
+        if(actors[i]['deliveryId']=deliveries[j]['id'])
+        {
+              actors[i]['payment'][0]['amount']=shippingPrice+deductibleReduction;
+            actors[i]['payment'][1]['amount']=shippingPrice - commission;
+            actors[i]['payment'][2]['amount']= insurance;
+            actors[i]['payment'][3]['amount']= treasury;
+            actors[i]['payment'][4]['amount']= commission-(insurance + treasury)+ deductibleReduction;
+          
+        }
+      }
+    }
   }
 }
 
