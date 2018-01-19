@@ -145,6 +145,34 @@ const actors = [{
   }]
 }];
 
+var i;
+var j;
+
+for( i=0;i<deliveries.length;i++)
+{
+  for( j=0;j<truckers.length;j++)
+  {
+    if(truckers[i]['id']==deliveries[j]['truckerId'])
+      deliveries[i]['price']=deliveries[i]['distance']*truckers[j]['pricePerKm']+deliveries[i]['volume']*truckers[j]['pricePerVolume'];
+
+    if(deliveries[i]['volume']>=5 && deliveries[i]['volume']<10)
+       deliveries[i]['price']= deliveries[i]['price'] - (deliveries[i]['price']*10)/100;
+
+    if(deliveries[i]['volume']>=10 && deliveries[i]['volume']<25)   
+      deliveries[i]['price']= deliveries[i]['price'] - (deliveries[i]['price']*30)/100;
+
+    if(deliveries[i]['volume']>=25)
+      deliveries[i]['price']= deliveries[i]['price'] - (deliveries[i]['price']*50)/100;
+  }
+}
+
+for( i = 0;i<deliveries.length;i++)
+{
+  deliveries[i]['insurance']=deliveries[i]['price']*15/100;
+  deliveries[i]['treasury']=deliveries[i]['distance']/500;
+  deliveries[i]['convargo']=deliveries[i]['price']*30/100-deliveries[i]['insurance']-deliveries[i]['treasury'];
+
+}
 console.log(truckers);
 console.log(deliveries);
 console.log(actors);
