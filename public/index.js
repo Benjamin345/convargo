@@ -158,8 +158,6 @@ for( i=0;i<deliveries.length;i++)
 {
   for( j=0;j<truckers.length;j++)
   {
-    /*getShippingPrice(deliveries[i]['truckerId'],truckers[j]['id']);
-    deliveries[i]['price']=shippingPrice;*/
     if(truckers[i]['id']==deliveries[j]['truckerId'])
     {
       shippingPrice=deliveries[i]['distance']*truckers[j]['pricePerKm']+deliveries[i]['volume']*truckers[j]['pricePerVolume'];
@@ -194,12 +192,11 @@ for( i=0;i<deliveries.length;i++)
       {
         if(actors[i]['deliveryId']=deliveries[j]['id'])
         {
-              actors[i]['payment'][0]['amount']=shippingPrice+deductibleReduction;
-            actors[i]['payment'][1]['amount']=shippingPrice - commission;
-            actors[i]['payment'][2]['amount']= insurance;
-            actors[i]['payment'][3]['amount']= treasury;
-            actors[i]['payment'][4]['amount']= commission-(insurance + treasury)+ deductibleReduction;
-          
+          actors[i]['payment'][0]['amount']=shippingPrice+deductibleReduction;
+          actors[i]['payment'][1]['amount']=shippingPrice - commission;
+          actors[i]['payment'][2]['amount']= insurance;
+          actors[i]['payment'][3]['amount']= treasury;
+          actors[i]['payment'][4]['amount']= commission-(insurance + treasury)+ deductibleReduction;
         }
       }
     }
